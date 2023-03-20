@@ -1,4 +1,5 @@
 const express = require('express');
+const { Request, Response } = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 
@@ -15,9 +16,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // UNHANDLED ROUTES
-app.all('*', (req, res, next) => {
-  const err = new AppError(`Can't find ${req.originalUrl} on this server!`, 404);
-  next(err);
-});
+app.all('*', (req: Request, res: Response) => {});
 
 export default app;
