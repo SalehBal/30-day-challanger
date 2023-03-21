@@ -1,7 +1,6 @@
-const express = require('express');
-const { Request, Response } = require('express');
-const cors = require('cors');
-const morgan = require('morgan');
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
 
 // APP
 const app = express();
@@ -16,6 +15,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 
 // UNHANDLED ROUTES
-app.all('*', (req: Request, res: Response) => {});
+app.all('*', (req: express.Request, res: express.Response) => {});
 
 export default app;
