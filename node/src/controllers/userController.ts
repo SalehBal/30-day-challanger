@@ -6,12 +6,13 @@ import jwt from 'jsonwebtoken';
 import tryCatch from '../utils/tryCatch.js';
 
 export async function signupFn(req: Request, res: Response) {
-  if (!req.body.email || !req.body.userName || !req.body.password) {
-    res.status(400).json({
-      status: 'fail',
-      err: 'Please enter all user info!',
-    });
-  }
+  // if (!req.body.email || !req.body.userName || !req.body.password) {
+  //   res.status(400).json({
+  //     status: 'fail',
+  //     err: 'Please enter all user info!',
+  //   });
+  // }
+  // console.log(req.body);
   tryCatch(async (req: Request, res: Response) => {
     const userId = uuidv4();
     const newPassword = await hashPassword(req.body.password);

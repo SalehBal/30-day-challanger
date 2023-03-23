@@ -16,6 +16,6 @@ app.use('/auth', authRouter);
 // UNHANDLED ROUTES
 app.all('*', (req, res) => { });
 // ERROR HANDLER
-app.all(errorHandler);
+app.use(errorHandler);
 export default app;
 //# sourceMappingURL=app.js.map

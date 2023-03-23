@@ -4,12 +4,13 @@ import hashPassword from '../utils/hashPassword.js';
 import jwt from 'jsonwebtoken';
 import tryCatch from '../utils/tryCatch.js';
 export async function signupFn(req, res) {
-    if (!req.body.email || !req.body.userName || !req.body.password) {
-        res.status(400).json({
-            status: 'fail',
-            err: 'Please enter all user info!',
-        });
-    }
+    // if (!req.body.email || !req.body.userName || !req.body.password) {
+    //   res.status(400).json({
+    //     status: 'fail',
+    //     err: 'Please enter all user info!',
+    //   });
+    // }
+    // console.log(req.body);
     tryCatch(async (req, res) => {
         const userId = uuidv4();
         const newPassword = await hashPassword(req.body.password);

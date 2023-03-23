@@ -23,6 +23,6 @@ app.use('/auth', authRouter);
 app.all('*', (req: express.Request, res: express.Response) => {});
 
 // ERROR HANDLER
-app.all(errorHandler);
+app.use(errorHandler);
 
 export default app;
