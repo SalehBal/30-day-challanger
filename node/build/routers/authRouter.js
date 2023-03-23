@@ -1,8 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var router = (0, express_1.Router)();
-router.post('/signup');
+import { Router } from 'express';
+import { signupFn } from '../controllers/userController.js';
+const router = Router();
+router.post('/signup', signupFn);
 router.post('/login');
 router.get('/loginAutomatically');
-exports.default = router;
+export default router;
+//# sourceMappingURL=authRouter.js.map

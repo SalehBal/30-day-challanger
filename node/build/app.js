@@ -1,19 +1,18 @@
-"use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var cors_1 = __importDefault(require("cors"));
-var morgan_1 = __importDefault(require("morgan"));
+import express from 'express';
+import cors from 'cors';
+import morgan from 'morgan';
+import authRouter from './routers/authRouter.js';
 // APP
-var app = (0, express_1.default)();
+const app = express();
 // CORS
-app.use((0, cors_1.default)());
+app.use(cors());
 // LOG EVRY REQUEST
-app.use((0, morgan_1.default)('dev'));
+app.use(morgan('dev'));
 // Get acces to req body
-app.use(express_1.default.json());
+app.use(express.json());
+// AUTH ROUTER
+app.use('/auth', authRouter);
 // UNHANDLED ROUTES
-app.all('*', function (req, res) { });
-exports.default = app;
+app.all('*', (req, res) => { });
+export default app;
+//# sourceMappingURL=app.js.map

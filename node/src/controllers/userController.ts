@@ -1,10 +1,16 @@
 import { Request, Response } from 'express';
-import User from '../models/userModel';
+import User from '../models/userModel.js';
 import { v4 as uuidv4 } from 'uuid';
-import hashPassword from '../utils/hashPassword';
+import hashPassword from '../utils/hashPassword.js';
 import jwt from 'jsonwebtoken';
 
 export async function signupFn(req: Request, res: Response) {
+  if (!req.body.email || !req.body.userName || !req.body.password) {
+    res.status(400).json({
+      status: 'fail',
+      err: 'Please enter all user info!',
+    });
+  }
   try {
     const userId = uuidv4();
     const newPassword = await hashPassword(req.body.password);
@@ -18,11 +24,10 @@ export async function signupFn(req: Request, res: Response) {
       id: userId,
       name: req.body.email,
     };
-    const token = jwt.sign(payload, 'process.env.JWTSECRET');
+    const token = jwt.sign(payload, process.env.JWTSECRET);
     res.status(201).json({
-      status: 'sucess',
+      status: 'success',
       token,
-      data: newUser,
     });
   } catch (err) {
     res.status(400).json({
@@ -31,5 +36,37 @@ export async function signupFn(req: Request, res: Response) {
     });
   }
 }
-export async function loginFn(req: Request, res: Response) {}
+export async function loginFn(req: Request, res: Response) {
+  try {
+    const { email, password } = req.body;
+    // CHECK IF THERE IS EMAIL OR PASSWORD
+    if (!email || !password) {
+      return res.status(400).json({
+        status: 'bad req',
+        mesagge: 'Please provide email or password!',
+      });
+    }
+    // CHECK IF USEREXISTS && PASSWORD IS CORRECT
+    const user = await User.findOne({ email }).select('+password');
+
+    // if (!user || !(await user.correctPassworrd(password, user.password))) {
+    //   res.status(401).json({
+    //     status: 'fail',
+    //     mesagge: 'Incorrect email or password!',
+    //   });
+    // }
+    // IF EVRYHING IS OK SEND TOKEN
+
+    // const token = signToken(user._id);
+    // res.status(200).json({
+    //   status: 'sucess',
+    //   token,
+    // });
+  } catch (err) {
+    res.status(400).json({
+      status: 'fail',
+      err,
+    });
+  }
+}
 export async function loginAutoFn(req: Request, res: Response) {}
