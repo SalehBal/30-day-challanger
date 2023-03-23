@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import authRouter from './routers/authRouter.js';
+import errorHandler from './utils/errorHandler.js';
 // APP
 const app = express();
 // CORS
@@ -14,5 +15,7 @@ app.use(express.json());
 app.use('/auth', authRouter);
 // UNHANDLED ROUTES
 app.all('*', (req, res) => { });
+// ERROR HANDLER
+app.all(errorHandler);
 export default app;
 //# sourceMappingURL=app.js.map
