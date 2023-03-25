@@ -6,14 +6,7 @@ import jwt from 'jsonwebtoken';
 import tryCatch from '../utils/tryCatch.js';
 
 export async function signupFn(req: Request, res: Response) {
-  // if (!req.body.email || !req.body.userName || !req.body.password) {
-  //   res.status(400).json({
-  //     status: 'fail',
-  //     err: 'Please enter all user info!',
-  //   });
-  // }
-  // console.log(req.body);
-  tryCatch(async (req: Request, res: Response) => {
+  try {
     const userId = uuidv4();
     const newPassword = await hashPassword(req.body.password);
     const newUser = await User.create({
@@ -22,6 +15,7 @@ export async function signupFn(req: Request, res: Response) {
       userName: req.body.userName,
       password: newPassword,
     });
+    console.log('newUser', newUser);
     const payload = {
       id: userId,
       name: req.body.email,
@@ -31,7 +25,11 @@ export async function signupFn(req: Request, res: Response) {
       status: 'success',
       token,
     });
-  });
+  } catch (error) {
+    console.log('err', error);
+  }
+  // tryCatch(async (req: Request, res: Response) => {
+  // });
 }
 export async function loginFn(req: Request, res: Response) {
   try {
