@@ -1,4 +1,4 @@
-import { Box, Button, Stack, TextField } from '@mui/material';
+import { Box, Button, Paper, Stack, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import bgImg from '../assets/background.jpg';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -32,7 +32,7 @@ function Auth() {
   return (
     <Box sx={pageStyles}>
       <Box sx={{ backgroundImage: `url(${bgImg})`, backgroundSize: 'cover', filter: 'blur(8px)', height: '100vh', width: '100vw', position: 'fixed', zIndex: '-1' }}></Box>
-      <Box sx={{ width: '50%', boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px', backgroundColor: '#fff' }}>
+      <Paper sx={{ width: '50%', boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}>
         <form onSubmit={handleSubmit(onSubmitFn)}>
           <Stack spacing={2}>
             {isSignup ? (
@@ -63,7 +63,7 @@ function Auth() {
             ) : null}
           </Stack>
         </form>
-      </Box>
+      </Paper>
     </Box>
   );
 }
