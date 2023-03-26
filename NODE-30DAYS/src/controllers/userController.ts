@@ -32,7 +32,6 @@ export async function loginFn(req: Request, res: Response) {
   try {
     const { email, password } = req.body;
     // CHECK IF THERE IS EMAIL OR PASSWORD
-    console.log(req.body);
     if (!email || !password) {
       return res.status(400).json({
         status: 'bad req',
@@ -41,8 +40,7 @@ export async function loginFn(req: Request, res: Response) {
     }
     // CHECK IF USEREXISTS && PASSWORD IS CORRECT
     const user = await User.findOne({ email });
-    console.log('user', user);
-    const isPasswordCorrect = await bcrypt.compare(req.body.password, password);
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
     console.log('isPasswordCorrect', isPasswordCorrect);
     if (!user || !isPasswordCorrect) {
       return res.status(401).json({
@@ -56,7 +54,6 @@ export async function loginFn(req: Request, res: Response) {
       name: email,
     };
     const token = jwt.sign(payload, process.env.JWTSECRET);
-    console.log('token', token);
     return res.status(200).json({
       status: 'sucess',
       token,
@@ -69,3 +66,4 @@ export async function loginFn(req: Request, res: Response) {
   }
 }
 export async function loginAutoFn(req: Request, res: Response) {}
+8;

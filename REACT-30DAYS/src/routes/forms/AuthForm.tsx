@@ -43,8 +43,6 @@ function AuthForm() {
       }
     } else {
       axios.post('http://localhost:2002/auth/login', { ...data }).then((res) => {
-        debugger;
-        console.log('object', res);
         setIsLoading(false);
         if (isChecked) {
           localStorage.setItem('jwttoken', res.data.token);
