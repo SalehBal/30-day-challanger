@@ -2,10 +2,11 @@ import { Box, Button, Paper, Stack, Grid, TextField, FormControlLabel, Checkbox 
 import React, { useState } from 'react';
 import bgImg from '../assets/background.jpg';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
 interface FormData {
   email: string;
   password: string;
-  username?: string;
+  userName?: string;
   passwordconfirm?: string;
 }
 function AuthForm() {
@@ -15,6 +16,7 @@ function AuthForm() {
     watch,
     formState: { errors },
   } = useForm<FormData>();
+
   const [isSignup, setIsSinup] = useState(false);
   function changeToSignUp() {
     setIsSinup(true);
@@ -24,8 +26,14 @@ function AuthForm() {
   }
 
   const onSubmitFn: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+    debugger;
+    if (isSignup) {
+      axios({ url: '/auth/signup', method: 'post', data }).then((res) => {
+        console.log(res);
+      });
+    }
   };
+
   return (
     <Paper sx={{ boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}>
       <form onSubmit={handleSubmit(onSubmitFn)}>
@@ -34,10 +42,10 @@ function AuthForm() {
             {isSignup ? (
               <TextField
                 fullWidth={true}
-                label={errors.username ? 'Username is required' : 'Username'}
+                label={errors.userName ? 'Username is required' : 'Username'}
                 variant='outlined'
-                {...register('username', { required: isSignup })}
-                error={errors.username ? true : false}
+                {...register('userName', { required: isSignup })}
+                error={errors.userName ? true : false}
               />
             ) : null}
           </Grid>
