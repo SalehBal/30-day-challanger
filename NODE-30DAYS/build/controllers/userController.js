@@ -1,20 +1,17 @@
 import User from '../models/userModel.js';
-import { v4 as uuidv4 } from 'uuid';
-import hashPassword from '../utils/hashPassword.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+// SIGNUP
 export async function signupFn(req, res) {
     try {
-        const userId = uuidv4();
-        const newPassword = await hashPassword(req.body.password);
+        const newPassword = await bcrypt.hash(req.body.password, 16);
         const newUser = await User.create({
-            id: userId,
             email: req.body.email,
             userName: req.body.userName,
             password: newPassword,
         });
-        console.log('newUser', newUser);
         const payload = {
-            id: userId,
+            id: newUser._id,
             name: req.body.email,
         };
         const token = jwt.sign(payload, process.env.JWTSECRET);
@@ -29,10 +26,12 @@ export async function signupFn(req, res) {
     // tryCatch(async (req: Request, res: Response) => {
     // });
 }
+// LOGIN
 export async function loginFn(req, res) {
     try {
         const { email, password } = req.body;
         // CHECK IF THERE IS EMAIL OR PASSWORD
+        console.log(req.body);
         if (!email || !password) {
             return res.status(400).json({
                 status: 'bad req',
@@ -40,19 +39,27 @@ export async function loginFn(req, res) {
             });
         }
         // CHECK IF USEREXISTS && PASSWORD IS CORRECT
-        const user = await User.findOne({ email }).select('+password');
-        // if (!user || !(await user.correctPassworrd(password, user.password))) {
-        //   res.status(401).json({
-        //     status: 'fail',
-        //     mesagge: 'Incorrect email or password!',
-        //   });
-        // }
+        const user = await User.findOne({ email });
+        console.log('user', user);
+        const isPasswordCorrect = await bcrypt.compare(req.body.password, password);
+        console.log('isPasswordCorrect', isPasswordCorrect);
+        if (!user || !isPasswordCorrect) {
+            return res.status(401).json({
+                status: 'fail',
+                mesagge: 'Incorrect email or password!',
+            });
+        }
         // IF EVRYHING IS OK SEND TOKEN
-        // const token = signToken(user._id);
-        // res.status(200).json({
-        //   status: 'sucess',
-        //   token,
-        // });
+        const payload = {
+            id: user._id,
+            name: email,
+        };
+        const token = jwt.sign(payload, process.env.JWTSECRET);
+        console.log('token', token);
+        return res.status(200).json({
+            status: 'sucess',
+            token,
+        });
     }
     catch (err) {
         res.status(400).json({

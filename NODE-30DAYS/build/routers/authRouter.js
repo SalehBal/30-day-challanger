@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { signupFn } from '../controllers/userController.js';
+import { signupFn, loginFn } from '../controllers/userController.js';
 const router = Router();
 router.post('/signup', signupFn);
-router.post('/login');
+router.post('/login', loginFn);
 router.get('/loginAutomatically');
 export default router;
 //# sourceMappingURL=authRouter.js.map

@@ -1,14 +1,12 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IUser extends Document {
-  id: string;
   userName: string;
   email: string;
   password: string;
 }
 
 const userSchema: Schema = new mongoose.Schema({
-  id: { type: String, required: true, unique: true },
   userName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },

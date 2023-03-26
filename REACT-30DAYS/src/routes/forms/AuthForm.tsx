@@ -1,4 +1,4 @@
-import { Box, Button, Paper, Stack, Grid, TextField, FormControlLabel, Checkbox } from '@mui/material';
+import { Box, Button, Paper, Stack, Grid, TextField, FormControlLabel, Checkbox, LinearProgress } from '@mui/material';
 import React, { useState } from 'react';
 import bgImg from '../assets/background.jpg';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -18,6 +18,8 @@ function AuthForm() {
   } = useForm<FormData>();
 
   const [isSignup, setIsSinup] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   function changeToSignUp() {
     setIsSinup(true);
   }
@@ -26,10 +28,27 @@ function AuthForm() {
   }
 
   const onSubmitFn: SubmitHandler<FormData> = (data) => {
-    debugger;
+    setIsLoading(true);
     if (isSignup) {
-      axios({ url: '/auth/signup', method: 'post', data }).then((res) => {
-        console.log(res);
+      if (data.password === data.passwordconfirm) {
+        axios.post('http://localhost:2002/auth/signup', { ...data }).then((res) => {
+          setIsLoading(false);
+          if (isChecked) {
+            localStorage.setItem('jwttoken', res.data.token);
+          }
+        });
+      } else {
+        setIsLoading(false);
+        alert('Password is not correct! Please try again!');
+      }
+    } else {
+      axios.post('http://localhost:2002/auth/login', { ...data }).then((res) => {
+        debugger;
+        console.log('object', res);
+        setIsLoading(false);
+        if (isChecked) {
+          localStorage.setItem('jwttoken', res.data.token);
+        }
       });
     }
   };
@@ -50,13 +69,21 @@ function AuthForm() {
             ) : null}
           </Grid>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-            <TextField fullWidth={true} label={errors.email ? 'Email is required' : 'Email'} variant='outlined' {...register('email', { required: true })} error={errors.email ? true : false} />
+            <TextField
+              fullWidth={true}
+              label={errors.email ? 'Email is required' : 'Email'}
+              type='email'
+              variant='outlined'
+              {...register('email', { required: true })}
+              error={errors.email ? true : false}
+            />
           </Grid>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
             <TextField
               fullWidth={true}
               label={errors.password ? 'Password is required' : 'Password'}
               variant='outlined'
+              type='password'
               {...register('password', { required: true })}
               error={errors.password ? true : false}
             />
@@ -67,15 +94,19 @@ function AuthForm() {
                 fullWidth={true}
                 label={errors.passwordconfirm ? 'Password confirm is required' : 'Password confirm'}
                 variant='outlined'
+                type='password'
                 {...register('passwordconfirm', { required: isSignup })}
                 error={errors.passwordconfirm ? true : false}
               />
             ) : null}
           </Grid>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
-            <Button fullWidth={true} type='submit' variant='contained'>
-              Submit
-            </Button>
+            {!isLoading ? (
+              <Button fullWidth={true} type='submit' variant='contained'>
+                Submit
+              </Button>
+            ) : null}
+            {isLoading ? <LinearProgress /> : null}
           </Grid>
           <Grid item xl={6} lg={6} md={6} sm={12} xs={12}>
             {!isSignup ? (
@@ -90,7 +121,7 @@ function AuthForm() {
             ) : null}
           </Grid>
           <Grid item xl={6} lg={6} md={6} sm={12} xs={12}>
-            <FormControlLabel control={<Checkbox />} label='Keep me logged in' />
+            <FormControlLabel control={<Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} />} label='Keep me logged in' />
           </Grid>
         </Grid>
       </form>
