@@ -2,8 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import morgan from 'morgan';
 import authRouter from './routers/authRouter.js';
-import errorHandler from './utils/errorHandler.js';
-
+import AppError from './utils/AppError.js';
+import errorHandler from './middlewares/errorHandler.js';
+import { Request, Response, NextFunction } from 'express';
 // APP
 const app = express();
 
@@ -20,9 +21,11 @@ app.use(express.json());
 app.use('/auth', authRouter);
 
 // UNHANDLED ROUTES
-app.all('*', (req: express.Request, res: express.Response) => {});
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+  throw new AppError(`Can't find ${req.originalUrl} on this server!`).NotFound();
+});
 
-// ERROR HANDLER
+// ERROR HANDLING MIDDLEWARE
 app.use(errorHandler);
 
 export default app;
