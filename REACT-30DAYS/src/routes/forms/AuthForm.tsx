@@ -1,4 +1,14 @@
-import { Box, Button, Paper, Stack, Grid, TextField, FormControlLabel, Checkbox, LinearProgress } from '@mui/material';
+import {
+  Box,
+  Button,
+  Paper,
+  Stack,
+  Grid,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  LinearProgress,
+} from '@mui/material';
 import React, { useState } from 'react';
 import bgImg from '../assets/background.jpg';
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -14,6 +24,7 @@ function AuthForm() {
     register,
     handleSubmit,
     watch,
+    reset,
     formState: { errors },
   } = useForm<FormData>();
 
@@ -21,38 +32,47 @@ function AuthForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   function changeToSignUp() {
+    reset();
     setIsSinup(true);
   }
   function changeToLogIn() {
+    reset();
     setIsSinup(false);
   }
 
   const onSubmitFn: SubmitHandler<FormData> = (data) => {
+    const payload = { ...data, keepUserLoggedIn: isChecked };
     setIsLoading(true);
     if (isSignup) {
       if (data.password === data.passwordconfirm) {
-        axios.post('http://localhost:2002/auth/signup', { ...data }).then((res) => {
-          setIsLoading(false);
-          if (isChecked) {
-            localStorage.setItem('jwttoken', res.data.token);
-          }
-        });
+        axios
+          .post('http://localhost:2002/auth/signup', payload)
+          .then((res) => {
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+          });
       } else {
         setIsLoading(false);
         alert('Password is not correct! Please try again!');
       }
     } else {
-      axios.post('http://localhost:2002/auth/login', { ...data }).then((res) => {
-        setIsLoading(false);
-        if (isChecked) {
-          localStorage.setItem('jwttoken', res.data.token);
-        }
-      });
+      axios
+        .post('http://localhost:2002/auth/login', payload)
+        .then((res) => {
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setIsLoading(false);
+        });
     }
   };
 
   return (
-    <Paper sx={{ boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}>
+    <Paper
+      sx={{ boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}
+    >
       <form onSubmit={handleSubmit(onSubmitFn)}>
         <Grid container spacing={2}>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
@@ -119,7 +139,10 @@ function AuthForm() {
             ) : null}
           </Grid>
           <Grid item xl={6} lg={6} md={6} sm={12} xs={12}>
-            <FormControlLabel control={<Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} />} label='Keep me logged in' />
+            <FormControlLabel
+              control={<Checkbox checked={isChecked} onChange={() => setIsChecked(!isChecked)} />}
+              label='Keep me logged in'
+            />
           </Grid>
         </Grid>
       </form>
