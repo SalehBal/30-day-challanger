@@ -13,10 +13,10 @@ const connectionpOptions = {
 mongoose
     .connect(process.env.DBURI, connectionpOptions)
     .then(() => {
+    console.log('Connected to MongoDB');
     app.listen(port, () => {
         console.log('Server listening the port 127.0.0.1:' + port + '/');
     });
-    console.log('Connected to MongoDB');
 })
     .catch((err) => {
     console.error('Error connecting to MongoDB:', err);

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
 import { StatusCodes } from 'http-status-codes';
-import AppError from '../utils/AppError.js';
 
 interface errorForSendingType {
   msg: string;
@@ -9,9 +8,10 @@ interface errorForSendingType {
 
 const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
   // set defaults
+  console.log('/*--------------------------- ERROR ---------------------------*/', err);
   let customError = {
     statusCode: err.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-    msg: err.message || 'Something went wrong try again later',
+    msg: err.message || 'Something went wrong, try again later!',
   };
 
   const errorForSending: errorForSendingType = {

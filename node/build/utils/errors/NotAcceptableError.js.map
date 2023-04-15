@@ -1,0 +1,1 @@
+{"version":3,"file":"NotAcceptableError.js","sourceRoot":"","sources":["../../../src/utils/errors/NotAcceptableError.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,mBAAmB,CAAC;AAChD,OAAO,cAAc,MAAM,iBAAiB,CAAC;AAE7C,MAAM,kBAAmB,SAAQ,cAAc;IAE7C,YAAY,OAAe;QACzB,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,UAAU,GAAG,WAAW,CAAC,cAAc,CAAC;IAC/C,CAAC;CACF;AAED,eAAe,kBAAkB,CAAC"}

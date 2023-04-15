@@ -9,6 +9,7 @@ export async function signupFn(req, res, next) {
     try {
         if (!password || !email || !userName) {
             throw new AppError('Please privide email, password and a username!').BadRequest();
+            // next(new AppError('Please privide email, password and a username!').BadRequest());
         }
         const date = new Date();
         const newPassword = await bcrypt.hash(password, 16);

@@ -1,9 +1,9 @@
-import express from 'express';
-import cors from 'cors';
-import morgan from 'morgan';
+import errorHandler from './middlewares/errorHandler.js';
 import authRouter from './routers/authRouter.js';
 import AppError from './utils/AppError.js';
-import errorHandler from './middlewares/errorHandler.js';
+import express from 'express';
+import morgan from 'morgan';
+import cors from 'cors';
 // APP
 const app = express();
 // CORS
@@ -12,6 +12,11 @@ app.use(cors());
 app.use(morgan('dev'));
 // Get acces to req body
 app.use(express.json());
+app.post('/test', (req, res, next) => {
+    const err = new AppError(`Can't find any shit on this server!`).Unauthorized();
+    console.log(err);
+    throw err;
+});
 // AUTH ROUTER
 app.use('/auth', authRouter);
 // UNHANDLED ROUTES
