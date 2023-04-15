@@ -1,29 +1,19 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Stack,
-  Grid,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  LinearProgress,
-} from '@mui/material';
-import React, { useState } from 'react';
-import bgImg from '../assets/background.jpg';
+import { Button, Paper, Grid, TextField, FormControlLabel, Checkbox, LinearProgress } from '@mui/material';
+import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import axios from 'axios';
+
 interface FormData {
   email: string;
   password: string;
   userName?: string;
   passwordconfirm?: string;
 }
+
 function AuthForm() {
   const {
     register,
     handleSubmit,
-    watch,
     reset,
     formState: { errors },
   } = useForm<FormData>();
@@ -70,9 +60,7 @@ function AuthForm() {
   };
 
   return (
-    <Paper
-      sx={{ boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}
-    >
+    <Paper sx={{ boxShadow: '5px 5px 14px 0px rgba(0,0,0,0.59)', padding: '24px', borderRadius: '10px' }}>
       <form onSubmit={handleSubmit(onSubmitFn)}>
         <Grid container spacing={2}>
           <Grid item xl={12} lg={12} md={12} sm={12} xs={12}>
