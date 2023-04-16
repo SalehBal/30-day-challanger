@@ -1,1 +1,0 @@
-{"version":3,"file":"BadGatewayError.js","sourceRoot":"","sources":["../../../src/utils/errors/BadGatewayError.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,WAAW,EAAE,MAAM,mBAAmB,CAAC;AAChD,OAAO,cAAc,MAAM,kBAAkB,CAAC;AAE9C,MAAM,eAAgB,SAAQ,cAAc;IAC1C,YAAY,OAAe;QACzB,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,UAAU,GAAG,WAAW,CAAC,WAAW,CAAC;IAC5C,CAAC;CACF;AAED,eAAe,eAAe,CAAC"}
