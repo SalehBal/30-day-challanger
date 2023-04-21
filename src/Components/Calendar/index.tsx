@@ -1,7 +1,9 @@
 import { Box, Grid } from '@mui/material';
-import React from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import Day from '../Day';
+
+const boxStyles = { height: '20vh', border: '2px solid #000 ' };
 
 function Calendar() {
   const calendarState = useSelector((state: RootState) => state.calendar);
@@ -9,8 +11,8 @@ function Calendar() {
     <Box>
       <Grid container spacing={2}>
         {calendarState.days.map((e, i) => (
-          <Grid key={i} item xs={2}>
-            DAY
+          <Grid sx={boxStyles} key={i} item xs={2}>
+            <Day />
           </Grid>
         ))}
       </Grid>
