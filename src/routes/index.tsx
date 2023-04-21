@@ -6,7 +6,7 @@ export default function MyRoutes() {
   return (
     <Routes>
       <Route path='/auth' element={<Auth />} />
-      <Route path='/dashboard' element={<Dashboard />} />
+      <Route path='/' element={<Dashboard />} />
     </Routes>
   );
 }

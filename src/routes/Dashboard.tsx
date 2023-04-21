@@ -2,12 +2,14 @@ import React from 'react';
 import { Typography, Button, Box } from '@mui/material';
 import MyDrawer from '../Components/MyDrawer';
 import Navigation from '../Components/Navigation';
+import Calendar from '../Components/Calendar';
 
 function Dashboard() {
   return (
     <Box>
-      <Navigation />
-      <MyDrawer />
+      <Calendar />
+      {/* <Navigation />
+      <MyDrawer /> */}
     </Box>
   );
 }
