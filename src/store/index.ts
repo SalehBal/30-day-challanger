@@ -8,3 +8,5 @@ const store = configureStore({ reducer: allReducers });
 const { dispatch } = store;
 
 export { store, dispatch };
+
+export type RootState = ReturnType<typeof store.getState>;
