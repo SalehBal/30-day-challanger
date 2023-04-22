@@ -9,7 +9,6 @@ export async function signupFn(req: Request, res: Response, next: NextFunction) 
   const { password, email, userName, keepUserLoggedIn } = req.body;
   try {
     if (!password || !email || !userName) {
-      // throw new AppError('Please privide email, password and a username!').BadRequest();
       next(new AppError('Please privide email, password and a username!').BadRequest());
     }
     const date = new Date();
@@ -34,8 +33,7 @@ export async function signupFn(req: Request, res: Response, next: NextFunction) 
       status: 'success',
     });
   } catch (err) {
-    console.log(err);
-    throw new AppError(err).BadRequest();
+    next(new AppError(err).BadRequest());
   }
 }
 // LOGIN
@@ -44,13 +42,13 @@ export async function loginFn(req: Request, res: Response, next: NextFunction) {
     const { email, password, keepUserLoggedIn } = req.body;
     // CHECK IF THERE IS EMAIL OR PASSWORD
     if (!email || !password) {
-      throw new AppError('Please privide email and password!').BadRequest();
+      next(new AppError('Please privide email and password!').BadRequest());
     }
     // CHECK IF USEREXISTS && PASSWORD IS CORRECT
     const user = await User.findOne({ email });
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!user || !isPasswordCorrect) {
-      throw new AppError('Incorrect email or password!').Unauthorized();
+      next(new AppError('Incorrect email or password!').Unauthorized());
     }
     // IF EVRYHING IS OK SEND TOKEN
     const payload = {
@@ -64,7 +62,7 @@ export async function loginFn(req: Request, res: Response, next: NextFunction) {
       status: 'sucess',
     });
   } catch (err) {
-    throw new AppError(err);
+    next(new AppError(err));
   }
 }
 export async function loginAutoFn(req: Request, res: Response, next: NextFunction) {}
