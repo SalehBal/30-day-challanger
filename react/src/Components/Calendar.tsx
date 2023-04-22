@@ -1,7 +1,7 @@
 import { Box, Grid } from '@mui/material';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import Day from '../Day';
+import { RootState } from '../store';
+import Day from './Day';
 
 const boxStyles = { height: '20vh', border: '2px solid #000 ' };
 function Calendar() {
